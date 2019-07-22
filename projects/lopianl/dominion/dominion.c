@@ -709,6 +709,8 @@ int playBaron(struct gameState* state, int choice1, int currentPlayer) {
 }
 
 int playMinion(struct gameState* state, int handPos, int currentPlayer, int choice1, int choice2) {
+ 	int i, j;
+
   //+1 action
   state->numActions++;
 
@@ -751,6 +753,8 @@ int playMinion(struct gameState* state, int handPos, int currentPlayer, int choi
 }
 
 int playTribute(struct gameState* state, int nextPlayer, int currentPlayer) {
+  int i; 
+
   int tributeRevealedCards[2] = {-1, -1};
 
   if((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1) {
