@@ -1,5 +1,24 @@
 CFLAGS= -Wall -fpic -coverage -lm -std=c99
 
+default: randomtestresults
+
+randomtestresults: randomtestcard1.c randomtestcard2.c randomtestcard3.c dominion.o rngs.o
+
+	echo "randomtestcard1.c:" &> randomtestresults.out
+	gcc -o randomtestcard1 -g randomtestcard1.c dominion.o rngs.o $(CFLAGS)
+	randomtestcard1 >> randomtestresults.out
+	gcov dominion.c -b -f >> randomtestresults.out
+
+	echo "randomtestcard2.c:" &> randomtestresults.out
+	gcc -o randomtestcard2 -g randomtestcard2.c dominion.o rngs.o $(CFLAGS)
+	randomtestcard2 >> randomtestresults.out
+	gcov dominion.c -b -f >> randomtestresults.out
+
+	echo "randomtestcard3.c:" &> randomtestresults.out
+	gcc -o randomtestcard3 -g randomtestcard3.c dominion.o rngs.o $(CFLAGS)
+	randomtestcard3 >> randomtestresults.out
+	gcov dominion.c -b -f >> randomtestresults.out
+
 rngs.o: rngs.h rngs.c
 	gcc -c rngs.c -g  $(CFLAGS)
 
@@ -39,4 +58,4 @@ player: player.c interface.o
 all: playdom player 
 
 clean:
-	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
+	rm -f *.o randomtestcard1 randomtestcard2 randomtestcard3 playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe

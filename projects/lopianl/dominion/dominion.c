@@ -673,7 +673,6 @@ int playBaron(struct gameState* state, int choice1, int currentPlayer) {
           state->hand[currentPlayer][state->handCount[currentPlayer]] = -1;
           state->handCount[currentPlayer]--;
 
-          card_not_discarded = 0;//Exit the loop
       }
       else if (p > state->handCount[currentPlayer]){
           if(DEBUG) {
@@ -692,6 +691,9 @@ int playBaron(struct gameState* state, int choice1, int currentPlayer) {
      
           card_not_discarded = 0;//Exit the loop
         }
+	else {
+		p++;
+	}
     }
   }
   else {
@@ -713,10 +715,10 @@ int playMinion(struct gameState* state, int handPos, int currentPlayer, int choi
   state->numActions++;
 
   //discard card from hand
-    discardCard(currentPlayer, handPos, state, 0);
+    discardCard(handPos, currentPlayer, state, 1);
 
     if(choice1) { //+2 coins
-      state->coins = state->coins + 2;
+      state->coins = 2;
     }
     else if(choice2) { //discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
     //discard hand
@@ -725,12 +727,12 @@ int playMinion(struct gameState* state, int handPos, int currentPlayer, int choi
       }
 
       //draw 4
-      for (i = 0; i < 4; i++) {
+      for (int i = 0; i < 4; i++) {
           drawCard(currentPlayer, state);
       }
 
       //other players discard hand and redraw if hand size > 4
-      for (i = 0; i < state->numPlayers; i++) {
+      for (int i = 0; i < state->numPlayers; i++) {
           if (i != currentPlayer) {
           if ( state->handCount[i] > 4 ) {
               //discard hand
@@ -739,8 +741,8 @@ int playMinion(struct gameState* state, int handPos, int currentPlayer, int choi
           }
               
               //draw 4
-              for (j = 0; j < 4; j++) {
-              drawCard(j, state);
+              for (int j = 0; j < 4; j++) {
+              drawCard(i, state);
           }
           }
       }
@@ -771,7 +773,7 @@ int playTribute(struct gameState* state, int nextPlayer, int currentPlayer) {
   }
   else {
     if(state->deckCount[nextPlayer] == 0) {
-      for (i = 0; i < state->discardCount[nextPlayer]; i++){
+      for (int i = 0; i < state->discardCount[nextPlayer]; i++){
           state->deck[nextPlayer][i] = state->discard[nextPlayer][i];//Move to deck
           state->deckCount[nextPlayer]++;
           state->discard[nextPlayer][i] = -1;
