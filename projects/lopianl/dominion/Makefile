@@ -1,5 +1,22 @@
 CFLAGS= -Wall -fpic -coverage -lm -std=c99
 
+default: curseTest
+
+deckCountTest: tributeDeckCountUnitTests.c dominion.o rngs.o
+	echo "tributeDeckCountUnitTests.c:" &> tests.out
+	gcc -o tributeDeckCountUnitTests -g tributeDeckCountUnitTests.c dominion.o rngs.o $(CFLAGS)
+	tributeDeckCountUnitTests >> tests.out
+
+actionTest: tributeActionsUnitTests.c dominion.o rngs.o
+	echo "tributeActionsUnitTests.c:" &> tests.out
+	gcc -o tributeActionsUnitTests -g tributeActionsUnitTests.c dominion.o rngs.o $(CFLAGS)
+	tributeActionsUnitTests >> tests.out
+
+curseTest: tributeCurseUnitTests.c dominion.o rngs.o
+	echo "tributeCurseUnitTests.c:" &> tests.out
+	gcc -o tributeCurseUnitTests -g tributeCurseUnitTests.c dominion.o rngs.o $(CFLAGS)
+	tributeCurseUnitTests >> tests.out
+
 rngs.o: rngs.h rngs.c
 	gcc -c rngs.c -g  $(CFLAGS)
 
@@ -39,4 +56,4 @@ player: player.c interface.o
 all: playdom player 
 
 clean:
-	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
+	rm -f *.o tributeDeckCountUnitTests tributeActionsUnitTests tributeCurseUnitTests playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
